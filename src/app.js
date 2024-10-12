@@ -4,6 +4,8 @@ const app = express();
 const User = require("./models/user")
 
 
+//this will work for all the routes
+app.use(express.json());
 
 app.post("/test",(req,res)=>{
     res.send("test was successful")
@@ -13,14 +15,8 @@ app.post("/signup", async (req,res) => {
     
 
     //creating a new instance of the user model 
-    const user = new User({
-        firstName: "Virat",
-        lastName: "Kohli",
-        emailId:"viratkohli@gmail.com", 
-        password:"virat123",
-        age:35,
-        gender:"male"
-    });
+    //i am creating a new user from the data i recieved
+    const user = new User(req.body);
 
     try{
         //data will be saved onto our database
