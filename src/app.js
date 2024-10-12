@@ -7,9 +7,6 @@ const User = require("./models/user")
 //this will work for all the routes
 app.use(express.json());
 
-app.post("/test",(req,res)=>{
-    res.send("test was successful")
-})
 
 app.post("/signup", async (req,res) => {
     
@@ -29,6 +26,38 @@ app.post("/signup", async (req,res) => {
     
 });
 
+
+
+
+// Feed API - GET /feed  -get all the users from the database
+app.get("/feed", async (req,res) => {
+    try{
+        const users = await User.find({});
+        res.send(users);
+    } catch(err) {
+        res.status(400).send("Something went wrong");
+    }
+});
+
+
+
+//Get user by email
+
+app.get("/user", async (req,res) => {
+    const userEmail = req.body.emailId;
+    try{
+        const users = await User.find({emailId : userEmail});
+        if(users.length === 0){
+            res.status(404).send("user not found")
+        } else{
+            res.send(users);
+        }
+        
+    } catch(err){
+        res.status(400).send("Something went wrong");   
+    }
+    
+})
 
 connectDB()
 .then(() => {
