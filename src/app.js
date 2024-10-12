@@ -1,25 +1,33 @@
 const express = require("express");
 const app = express();
 
-app.use("/user", [(req,res,next) => {
-    //route handler
-    // res.send("route Handler 1");
-    console.log("handeling the route user");
-    next();
+const {adminAuth,userAuth} = require("./middlewares/auth");
+//handle auth middleware for GET,POSt,DELETE
+//logic of checking if the request is sctaully made by the admin (request is authorized)
 
-    // res.send("respone 1!!");
-}, 
-    (req,res,next) => {
-    console.log("called the 2nd route handler");
-    next();
-    // res.send("resonse 2!!");
+//this is a middleware that will only br called for /admin
+app.use("/admin" , adminAuth);
+
+app.post("/user/login",(req,res)=>{
+    res.send("user logged in successfully")
+})
+
+app.get("/user",userAuth,(req,res) => {
+    res.send("user data sent"); 
+})
+
+app.get("/admin/getAllData", (req,res) => {
+    //logic of fetching all data
     
-},
-(req,res) => {
-    console.log("called the 3rd route handler");
-    res.send("resonse 3!!");
-}]);
+    res.send("All data sent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ")
 
+});
+
+app.get("/admin/deleteUser", (req,res) => {
+    //logic of deleting
+    res.send("Deleted user");
+
+});
 
 app.listen(3000,() => { 
     console.log("server is running on port 3000");
