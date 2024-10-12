@@ -41,7 +41,7 @@ app.get("/feed", async (req,res) => {
 
 
 
-//Get user by email
+/* //Get user by email
 
 app.get("/user", async (req,res) => {
     const userEmail = req.body.emailId;
@@ -57,7 +57,33 @@ app.get("/user", async (req,res) => {
         res.status(400).send("Something went wrong");   
     }
     
+}) */
+
+
+//delete user api
+app.delete("/user", async (req,res) => {
+    const userId = req.body.userId;
+    try{
+        const user = await User.findByIdAndDelete(userId);
+        res.send("User Deleted successfully");
+
+    } catch(err) {
+        res.status(400).send("Something went wrong");
+    }
 })
+
+//update data of the user
+app.patch("/user", async (req,res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try{
+        await User.findByIdAndUpdate({_id:userId} ,data);
+        res.send("user updated successfully");
+    } catch(err){
+        res.status(400).send("Something went wrong");
+    }
+})
+
 
 connectDB()
 .then(() => {
